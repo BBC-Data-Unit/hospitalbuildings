@@ -1,5 +1,7 @@
 # NHS crisis: Patient care hit by disrepair in buildings
 
+![Beams and props holding up parts of the ceiling at a Norfolk hospital](https://ichef.bbci.co.uk/news/976/cpsprodpb/2DE4/production/_125684711_16079512-877c-4545-bb73-f8328783cc10.png.webp)
+
 In February 2024 The Shared Data Unit (SDU) [looked at the scale of the backlog of repairs affecting hospitals, and the human impact of those](https://www.bbc.co.uk/news/uk-england-68214879): thousands of potentially-harmful incidents including critically-ill patients being moved when rainfall came through the ceiling.
 
 ## Methodology
@@ -11,6 +13,10 @@ In some cases trusts have merged to create new trusts. Where possible we have us
 Data on clinical incidents was taken from the same dataset. These are defined as those leading to “services being delayed, cancelled or otherwise interfered with owing to problems or failures related to the estates and infrastructure failure.” Incidents include problems with electrical, water or ventilation systems, internal fabric and fixtures, roofs and structures, or lifts and hoists.
 
 Before 2021 this was only provided at trust level, so we have limited our analysis to the two latest years during which data has been provided at site level. In the most recent data hospitals also provide (where incidents have been recorded) data on the first, second, and third most clinically impactful incident type, and so we have included this too.
+
+## Data
+
+## Scripts
 
 ## Partner usage
 
