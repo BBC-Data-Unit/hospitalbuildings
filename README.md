@@ -18,6 +18,14 @@ Before 2021 this was only provided at trust level, so we have limited our analys
 
 ## Scripts
 
+As well as the Python notebook to gather, combine and clean the data on hospital buildings, R notebooks were used to create a bespoke analysis for 112 separate trusts, and publish that as a webpage with a page detailing the picture at each trust. The code for those notebooks is available in this repo in [the scripts folder](https://github.com/BBC-Data-Unit/hospitalbuildings/tree/main/scripts) and at the links below.
+
+* [R notebook that generates the homepage for the story website](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/index.Rmd)
+* [R notebook that generates a 'template' page for each hospital trust](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/01templateBYTRUST.Rmd)
+* [R notebook that 'renders' that template into 120 different markdown files - one for each hospital trust](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/02render.Rmd)
+* [R notebook that renders those 112 markdown files as HTML versions](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/03renderhtml.Rmd)
+* [R notebook that cleans those HTML files and adds extra elements such as navigation, charts, etc.](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/04cleaning.Rmd)
+
 ## Partner usage
 
 * Alton Herald: [Tens of millions of pounds needed to repair crumbling buildings at Southern Health](https://www.altonherald.com/news/tens-of-millions-of-pounds-needed-to-repair-crumbling-buildings-at-southern-health-667125)
