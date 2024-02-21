@@ -14,7 +14,14 @@ Data on clinical incidents was taken from the same dataset. These are defined as
 
 Before 2021 this was only provided at trust level, so we have limited our analysis to the two latest years during which data has been provided at site level. In the most recent data hospitals also provide (where incidents have been recorded) data on the first, second, and third most clinically impactful incident type, and so we have included this too.
 
+Further information on the methodology can be found in a [dedicated methodology document](https://docs.google.com/document/d/1wVUgjH1YpWRKX2Tthkbf0i0XoI9p6giUbI-emnzhDsE/edit?usp=sharing)
+
 ## Data
+
+* NHS Digital: [Estates Returns Information Collection (ERIC)](https://digital.nhs.uk/data-and-information/publications/statistical/estates-returns-information-collection)
+* [NHS data on successor organisations](https://digital.nhs.uk/services/organisation-data-service/export-data-files/csv-downloads/miscellaneous)
+* ONS: [Construction output price indices](https://www.ons.gov.uk/businessindustryandtrade/constructionindustry/datasets/interimconstructionoutputpriceindices)
+* [Hospital FOI responses](https://docs.google.com/spreadsheets/d/1VWCysIpaq0H3xh8XxbEMo73EmeIJbdzfcaCg-koqJw0/edit?usp=sharing)
 
 ## Scripts
 
