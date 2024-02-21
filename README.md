@@ -2,6 +2,16 @@
 
 In February 2024 The Shared Data Unit (SDU) [looked at the scale of the backlog of repairs affecting hospitals, and the human impact of those](https://www.bbc.co.uk/news/uk-england-68214879): thousands of potentially-harmful incidents including critically-ill patients being moved when rainfall came through the ceiling.
 
+## Methodology
+
+We analysed data from the last five years of the NHS’s [Estates Returns Information Collection (ERIC)](https://digital.nhs.uk/data-and-information/publications/statistical/estates-returns-information-collection) to look at the cost of the backlog of repairs facing hospitals in the NHS. These repairs are grouped into four risk areas: “low”, “moderate”, “significant”, and “high risk”. To ensure that comparisons were accurate, historical costs were adjusted for inflation using the Construction output price indices on all construction (new work and repair and maintenance).
+
+In some cases trusts have merged to create new trusts. Where possible we have used old trusts’ figures to provide historical context to the new trust’s repair costs, using [NHS data on successor organisations](https://digital.nhs.uk/services/organisation-data-service/export-data-files/csv-downloads/miscellaneous).
+
+Data on clinical incidents was taken from the same dataset. These are defined as those leading to “services being delayed, cancelled or otherwise interfered with owing to problems or failures related to the estates and infrastructure failure.” Incidents include problems with electrical, water or ventilation systems, internal fabric and fixtures, roofs and structures, or lifts and hoists.
+
+Before 2021 this was only provided at trust level, so we have limited our analysis to the two latest years during which data has been provided at site level. In the most recent data hospitals also provide (where incidents have been recorded) data on the first, second, and third most clinically impactful incident type, and so we have included this too.
+
 ## Partner usage
 
 * Alton Herald: [Tens of millions of pounds needed to repair crumbling buildings at Southern Health](https://www.altonherald.com/news/tens-of-millions-of-pounds-needed-to-repair-crumbling-buildings-at-southern-health-667125)
