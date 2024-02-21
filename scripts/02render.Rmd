@@ -1,0 +1,47 @@
+---
+title: "02render"
+output: html_document
+date: "2024-01-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rendering the markdown files
+
+Allow around 20 minutes for these files to be generated. 
+
+```{r import data and clean}
+datafile = "hospitalbuildingsANALYSIS.xlsx"
+pivotbyTrust_GACONLY_RISK <- readxl::read_xlsx(datafile, 
+                                               sheet = 'pivotbyTrust_GACONLY_RISK')
+pivotbyTrust_GACONLY_RISK$`202223`
+
+#filter out NAs
+filteroutNA <- dplyr::filter(pivotbyTrust_GACONLY_RISK, 
+                             !is.na(`202223`))
+filteroutNA <- dplyr::filter(filteroutNA, 
+                             !is.na(`202122`))
+
+#create a list of orgs
+trusts <- unique(filteroutNA$`Most Recent Trust Name`)
+
+#remove Norfolk
+trusts <- trusts[trusts != "NORFOLK AND NORWICH UNIVERSITY HOSPITALS NHS FOUNDATION TRUST"]
+#remove St Helens
+trusts <- trusts[trusts != "ST HELENS AND KNOWSLEY TEACHING HOSPITALS NHS TRUST"]
+```
+
+This code will throw an error if the 'site' folder hasn't been created earlier by knitting the 01 template file. 
+
+```{r generate md files}
+#store the location of the template 
+paramsfile <- "01templateBYTRUST.Rmd"
+
+#loop through all regions 
+for (t in trusts) {
+  rmarkdown::render(paramsfile, params = list(trust = t), output_file = paste(sep="",'site/',stringr::str_replace_all(stringr::str_replace_all(t," ","-"),"'",""),'.md'),
+    envir = parent.frame())
+}
+```

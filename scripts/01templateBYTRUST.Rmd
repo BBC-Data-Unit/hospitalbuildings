@@ -1,0 +1,476 @@
+---
+title: |
+  ![](https://raw.githubusercontent.com/sduiopc/test1/branch1/LNP%20Header-01.jpg){align=right width=40%}
+output: 
+  html_document:
+    includes:
+       in_header: analyticsscript.html
+    self_contained: false
+    lib_dir: site/libs
+
+params:
+  trust: "BEDFORDSHIRE HOSPITALS NHS FOUNDATION TRUST"
+---
+
+
+
+
+```{r setup, include=FALSE}
+#AIREDALE NHS FOUNDATION TRUST
+#useful for variation - high risk down, overall up
+#WHITTINGTON HEALTH NHS TRUST
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      message = F)
+```
+
+```{r import libraries}
+library(tidyverse)
+library(DT)
+library(stringr)
+library(ggplot2)
+#install.packages('plotly')
+
+#library(plotly)
+
+```
+
+```{r format trust name}
+#convert trust name to title case, then replace Nhs with NHS
+trustproper <- stringr::str_replace(stringr::str_to_title(params$trust),"Nhs","NHS")
+#add markdown to make it bold
+boldtrustproper <- paste0("**",trustproper,"**")
+```
+
+```{r import trust data}
+datafile = "hospitalbuildingsANALYSIS.xlsx"
+pivotbyTrust_GACONLY_RISK <- readxl::read_xlsx(datafile, 
+                                               sheet = 'pivotbyTrust_GACONLY_RISK')
+```
+
+```{r calculate national figures}
+#this code is no longer needed, as the national figures have been put in as static text
+pivotbyYear <- readxl::read_xlsx(datafile, 
+                                 sheet = 'costs_hosp_only')
+
+#add up the latest year's figures for all risk categories
+national_total <- sum(pivotbyYear[5,2:5])
+#and last year's
+lastyr_total <- sum(pivotbyYear[4,2:5])
+#and the change
+national_change <- national_total - lastyr_total
+#as a percentage
+national_change_pc <- national_change/lastyr_total
+#multiply by 100 and round to 1 decimal place
+national_change_pc <- round(national_change_pc*100, digits = 1)
+
+#repeat for high risk only
+national_total_high <- sum(pivotbyYear[5,2])
+#and last year's
+lastyr_total_high <- sum(pivotbyYear[4,2])
+#and the change
+national_change_high <- national_total_high - lastyr_total_high
+#as a percentage
+national_change_high_pc <- national_change_high/lastyr_total_high
+#multiply by 100 and round to 1 decimal place
+national_change_high_pc <- round(national_change_high_pc*100, digits = 1)
+```
+
+
+```{r filter to this trust}
+#use this to get the column names
+#colnames(df)
+#use this to get the values for the column to filter on
+#table(thistrustdf$measure)
+#create a filtered dataset for this trust
+thistrustdf <- dplyr::filter(pivotbyTrust_GACONLY_RISK, 
+                             `Most Recent Trust Name` == params$trust)
+
+#turn off scientific notation
+options(scipen = 999)
+#calculate total of all the YoY changes - skipping NA results
+totalYOYchange <- sum(thistrustdf$`YoY change`[!is.na(thistrustdf$`YoY change`)])
+
+#ADD THIS AS A CHECK IF WE NEED TO SKIP FOR DIV ERRORS
+#is.na(totalYOYchange)
+
+#store the latest year, which will be 4 in from the end
+latestyrfigs <- thistrustdf[,length(thistrustdf)-3]
+#use the year instead
+#latestyrfigs <- thistrustdf$`202223`
+#calculate the total - round it so no decimals
+total_latest_yr <- round(sum(latestyrfigs), digits = 0)
+
+#store the previous year
+prevyrfigs <- thistrustdf[,length(thistrustdf)-4]
+#prevyrfigs <- thistrustdf$`202122`
+#calculate the total - round it so no decimals
+total_prev_yr <- round(sum(prevyrfigs), digits = 0)
+#calculate as a %
+totalYOYchangePerc <- totalYOYchange/total_prev_yr
+#multiply by 100
+totalYOYchangePerc<- round(totalYOYchangePerc*100, digits = 1)
+
+#find out if figures went up or down
+ if(totalYOYchange > 0){
+   change <- "risen"
+ } else if (totalYOYchange < 0){
+   change <- "fallen"
+ } else if (totalYOYchange == 0){
+   change <- "remained unchanged"
+ }
+
+#store this region too
+thisregion <- thistrustdf$`Commissioning Region`[1]
+```
+
+```{r highcost calcs}
+#grab just the high cost row
+highcostonly <- thistrustdf[thistrustdf$measureclean == "Cost to eradicate high risk backlog (GBP)",]
+#extract just the high risk backlog costs from the latest year
+latest_highcost <- highcostonly$`202223`
+#and previous year
+prev_highcost <- highcostonly$`202122`
+#find out if figures went up or down
+ if(latest_highcost > prev_highcost){
+   changehc <- "risen"
+ } else if (latest_highcost < prev_highcost){
+   changehc <- "fallen"
+ } else if (latest_highcost == prev_highcost){
+   changehc <- "remained unchanged"
+ }
+
+#create a comparator term between the two changes
+if(change == changehc){
+  comparator <- " also"
+} else {
+  comparator <- ", however, "
+}
+
+#calculate the change
+change_highcost <- latest_highcost-prev_highcost
+#calculate as a percentage
+changePerc_highcost <- change_highcost/prev_highcost
+#multiply by 100 and round to 1 decimal place
+changePerc_highcost <- round(changePerc_highcost*100, digits = 1)
+
+#add a perc sign
+changePerc_highcost <- paste0(gsub("-","",changePerc_highcost),"%")
+
+#replace the Inf and NaN
+if(changePerc_highcost == 'Inf%'){
+  changePerc_highcost <- '-'
+} else if(changePerc_highcost == 'NaN%'){
+  changePerc_highcost <- '-'
+}
+
+```
+
+
+# `r trustproper`
+
+The cost of general acute hospital repairs backlogs at `r boldtrustproper` has **`r change` `r gsub("-","",totalYOYchangePerc)`%** from £`r format(total_prev_yr, big.mark=",")` to £`r format(total_latest_yr, big.mark=",")` in the last financial year, according to analysis of [data released by NHS Digital](https://digital.nhs.uk/data-and-information/publications/statistical/estates-returns-information-collection/england-2022-23).
+
+The backlog of high-risk repair costs has`r comparator` `r changehc` **`r changePerc_highcost`** from £`r format(round(prev_highcost), big.mark=",")` to £`r format(latest_highcost, big.mark=",")`.
+
+At a national level the high risk repairs backlog has risen more than a third in the last year to £2,078,970,702, while the overall repairs backlog has risen 8.7% to £9,509,161,437 (figures adjusted for inflation). 
+
+
+```{r import incidents}
+#import data exported from Python notebook
+last2yrs_incidents <- rio::import("last2yrs_incidents.csv")
+
+#find the notes for this trust
+
+#create a custom SQL query that creates a pivot table adding up for each year
+#We use ' because we need to put the name in " because it has ' in ST PETER'S
+thistrustquery <- paste0('SELECT `Most Recent Trust Name`, yearending, SUM(valuesclean) AS incidents FROM last2yrs_incidents WHERE measure LIKE "Clinical service incidents%" AND `Most Recent Trust Name` IS "',params$trust,'" AND `sitetypeclean` IS "General acute hospital" GROUP BY yearending')
+#run that query and store in a dataframe
+thistrust_incidents <- sqldf::sqldf(thistrustquery)
+
+#aacheck <- sqldf::sqldf(paste0('SELECT `Site Name`, measure, yearending, valuesclean FROM last2yrs_incidents WHERE measure LIKE "%Clinical service incidents%" AND `Most Recent Trust Name` IS "',params$trust,'" AND `sitetypeclean` IS "General acute hospital"'))
+
+
+#extract the figures in row two column 3
+incidents23 <- thistrust_incidents[2,3]
+#and row 1 column 3
+incidents22 <- thistrust_incidents[1,3]
+#subtract the old figure from the newer figure to get the change
+incident_chg <- incidents23 - incidents22
+#divide the change by the old figure to get it as a %
+incident_chgPerc <- incident_chg/incidents22
+#and convert to a % figure
+incident_chgPerc <- round(incident_chgPerc*100, digits = 1)
+
+#if the change is positive or negative, set the phrase describing it as a fall or rise
+if (incidents23 > incidents22){
+  incident_chgtype <- "an increase"  
+} else if (incidents23 < incidents22) {
+  incident_chgtype <- "a drop"  
+} else {
+  incident_chgtype <- "unchanged"  
+}
+
+#change the tense if there "was" just one "incident"
+if (incidents23 == 1){
+  werewas <- "was"
+  incidentplural <- "incident"
+} else {
+  werewas <- "were"
+  incidentplural <- "incidents"
+}
+
+#change the tense for 22 if there "was" just one "incident"
+if (incidents22 == 1){
+  werewas22 <- "was"
+  incidentplural22 <- "incident"
+} else {
+  werewas22 <- "were"
+  incidentplural22 <- "incidents"
+}
+
+```
+
+
+In 2022-23, there `r werewas` `r incidents23` “clinical service `r incidentplural` caused by estates and infrastructure failure,” `r incident_chgtype` compared to `r incidents22` such `r incidentplural22` in 2021-22.
+
+Clinical service incidents are defined as those leading to "services being delayed, cancelled or otherwise interfered with owing to problems or failures related to the estates and infrastructure failure." An incident is "considered to be a delay of at least 30 minutes to clinical services affecting at least 5 patients or equivalent."
+
+Incidents include problems with electrical, water or ventilation systems, internal fabric and fixtures, roofs and structures, or lifts and hoists. See the table at the bottom of this page for a list of the top three most impactful categories of incident reported by each hospital, where applicable.
+
+
+```{r fetch notes}
+#store the URL of the sheet from the Google Sheets doc shared as a CSV
+namenotesurl <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgtsnTAuRKfLgjwMzz_DdFDcxBF8t3KqX30HX9vKJZDeaMq2p-AZD-1dBAboOQwUHYwNaWkUwY56SG/pub?gid=458095730&single=true&output=csv"
+#import from that URL
+namenotes <- readr::read_csv(namenotesurl)
+#find the notes for this trust
+thistrustnotes <- dplyr::filter(namenotes, 
+                             `Most Recent Trust Name` == params$trust)
+
+
+
+if(is.na(thistrustnotes[2])){
+  thistrustnotes <- ""
+} else {
+  thistrustnotes <- paste0("*Note: ",thistrustnotes[2],"*")
+}
+```
+
+`r thistrustnotes`
+
+## Explore the data
+
+
+```{r make filtered copy for vis}
+#import a different sheet 
+#df <- readxl::read_xlsx(datafile, sheet = 'pivotbyTrust_GACONLY_RISK')
+df <- readxl::read_xlsx(datafile, sheet = 'pivotbyTrust_GACONLY_RISKwHOSP')
+
+# Filter the dataframe for the specific trust name
+#adapted so that it uses the parameter rather than a string
+df_filtered <- df[df$`Most Recent Trust Name` == params$trust, ]
+
+#remove the site type col
+df <- df_filtered[,-5]
+#remove the last 3 columns
+#df <- df[,-12]
+#df <- df[,-11]
+#df <- df[,-10]
+```
+
+
+```{r stacked bar chart}
+#the following is adapted from code generated by ChatGPT in response to the prompt:
+#>> Write code in R to generate a ggplot stacked bar chart with a bar for each year, and each bar broken down by the 'measureclean' column values, based on the following dataframe: [paste the first two rows]
+#>>update the code so that it is just for one of the values in 'Most Recent Trust Name': JAMES PAGET UNIVERSITY HOSPITALS NHS FOUNDATION TRUST
+#>>Update the code so that the y axis does not use scientific notation and instead shows figures rounded to the nearest million or thousand, whichever is larger, and with no decimal places. Add a pound (£) symbol to the front of the labels. Do not add a dollar ($) sign.
+
+# Convert the dataframe from wide to long format
+#df_long <- tidyr::gather(df, key = "Year", value = "Value", -measureclean, -`Most Recent Trust Name`, -`Commissioning Region`, -`YoY change`, -`YoY change %`, -`YoY change %aswholenum`, -`...1`)
+#if wHOSP version used
+df_long <- tidyr::gather(df, key = "Year", value = "Value", -measureclean, -`Most Recent Trust Name`, -`YoY change`, -`YoY change %`, -`YoY change %aswholenum`, -`...1`, -`Site Name`,-`sitetypeclean`)
+
+
+# Convert 'Year' to a factor to maintain the order
+df_long$Year <- factor(df_long$Year, levels = c("201819", "201920", "202021", "202122", "202223"))
+
+# Modify 'Year' labels
+df_long$Year <- gsub("(\\d{4})(\\d{2})", "\\1-\\2", df_long$Year)
+
+#create the caption, wrapped so a new line starts at any space near 80 chars
+wrapped_caption <- str_wrap(paste("Figures adjusted for inflation using ONS output price indices for 'All construction (new work and repair and maintenance)'\n",thistrustnotes),110)
+
+# Specify the desired order of the 'measureclean' variable
+custom_order <- rev(c("Cost to eradicate low risk backlog (GBP)",
+                      "Cost to eradicate moderate risk backlog (GBP)",
+                      "Cost to eradicate significant risk backlog (GBP)",
+                      "Cost to eradicate high risk backlog (GBP)"))
+
+# Convert 'measureclean' to an ordered factor with the custom order
+df_long$measureclean <- factor(df_long$measureclean, levels = custom_order, ordered = TRUE)
+
+# BBC color scheme
+bbc_colors <- c("#1f4057", "#2d6a4f", "#4f9d8e", "#78c0a8", "#a4dbb2")
+       
+# Plot the stacked bar chart
+ggplot(df_long, aes(x = Year, y = Value, fill = measureclean)) +
+  geom_bar(stat = "identity") +
+    scale_fill_manual(values = bbc_colors) +
+  facet_wrap(~`Most Recent Trust Name`, scales = "free_y", ncol = 1) +
+  labs(title = paste("Repairs backlog costs for \n", trustproper),
+       x = "Financial year",
+       y = "Cost",
+       fill = "Measure",
+       # Set legend title to NULL to remove it
+       subtitle = NULL,
+       caption = wrapped_caption) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),  # Centre-aligned title
+    plot.caption = element_text(hjust = 0), #centre align caption
+    legend.position = "bottom",  # Move legend above the chart
+  ) +
+  
+  scale_y_continuous(labels = scales::dollar_format(prefix = "£", scale = 1e-6, suffix = "m", accuracy = 1)) +
+    guides(fill = guide_legend(nrow = 2))  # Wrap legend
+
+```
+
+
+## Explore general acute hospitals in this trust
+
+The interactive table below shows the cost to eradicate the repairs backlog at all four levels of risk at general acute hospital sites in **`r trustproper`**. Click on the column titles once to sort by that column, smallest to largest, and again to sort largest to smallest. Type into the boxes above each column to filter to results containing the keyword being typed.
+
+
+```{r import hospital data}
+datafile = "hospitalbuildingsANALYSIS.xlsx"
+pivotbyHospitalALLRISK <- readxl::read_xlsx(datafile, 
+                                               sheet = 'pivotbyHospitalALLRISK')
+```
+
+
+```{r create table for trust sites}
+df_for_table <- pivotbyHospitalALLRISK %>%
+  filter(grepl(params$trust, `Most Recent Trust Name`, ignore.case = TRUE))
+
+#remove columns at end we don't need
+df_for_table <- df_for_table[,-11:-15]
+#remove columns with trust and code
+df_for_table <-  df_for_table[,-3:-4]
+#remove second column with index
+df_for_table <- df_for_table[,-1]
+#remove second column with region
+df_for_table <- df_for_table[,-2]
+
+#import cleaned names
+namecleaningcsv <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vR2BLjCGIGTng9QxQ7hWeM8j6bW0e7ce6MSjcU0QA7HYQIqY0qbB4H9hBKrx9H0apxihVkL25YT6-Qb/pub?gid=0&single=true&output=csv"
+namecleaning <- read_csv(namecleaningcsv)
+#merge with df
+joined_df <- df_for_table %>%
+  left_join(select(namecleaning, `Site Name`, UNIQUENAME), by = "Site Name")
+
+#there are some hospitals with the same name in different trusts
+#remove the hospital that doesn't belong to this trust
+if (params$trust == "UNIVERSITY HOSPITALS SUSSEX NHS FOUNDATION TRUST") {
+  joined_df <- joined_df %>% filter(UNIQUENAME != "PRINCESS ROYAL HOSPITAL (MIDLANDS)")
+  } else if (params$trust == "SHREWSBURY AND TELFORD HOSPITAL NHS TRUST") {
+    joined_df <- joined_df %>% filter(UNIQUENAME != "PRINCESS ROYAL HOSPITAL (SE)")
+  } else if (params$trust == "THE LEWISHAM AND GREENWICH NHS TRUST") {
+    joined_df <- joined_df %>% filter(UNIQUENAME != "QUEEN ELIZABETH HOSPITAL (NE & YORKS)")
+  } else if (params$trust == "GATESHEAD HEALTH NHS FOUNDATION TRUST") {
+    joined_df <- joined_df %>% filter(UNIQUENAME != "QUEEN ELIZABETH HOSPITAL (LONDON)")
+  } else if (params$trust == "SOUTH TYNESIDE AND SUNDERLAND NHS FOUNDATION TRUST") {
+    joined_df <- distinct(joined_df)
+  }
+
+#remove any duplicates that may result in double counting, as happened in South Tyneside
+joined_df <- distinct(joined_df)
+
+# Group by Site Name, then sum all numeric columns (201819 to 202223)
+df_summary <- joined_df %>%
+  #mutate(UNIQUENAME = str_remove(`Site Name`, "^THE ")) %>%  # Remove "THE"
+  group_by(UNIQUENAME) %>%
+  summarise(across(2:6, ~ sum(.x, na.rm = TRUE))) %>%
+  ungroup()  # Ungroup to get one row per site
+# Rename first column from "(Unnamed: 1)" to "Site Name"
+colnames(df_summary)[1] <- "Hospital name"
+# Sort the data frame by Site Name
+df_for_table <- df_summary %>%
+  arrange(`Hospital name`)
+
+
+#convert the % change to a number
+#df_for_table$`YoY change %` <- as.numeric(df_for_table$`YoY change %`)
+#and to a whole % number
+#df_for_table$`YoY change %` <-scales::percent(df_for_table$`YoY change %`, scale = 100, accuracy = 0.1)
+
+#work out the position of the last year
+lastyrindex <- length(colnames(df_for_table))
+#loop through the years to add clean versions
+for (i in colnames(df_for_table)[2:lastyrindex]){
+  #print(i)
+  #format the column as currency
+  df_for_table[[i]] <- scales::dollar(as.numeric(df_for_table[[i]]), accuracy = 1, prefix = "£")
+  #yr_range <- paste0(substring(i,1,4),"-",substring(i,5,6))
+}
+
+
+```
+
+
+```{r table}
+#rename columns 
+#Create the datatable. Add a caption if you want
+DT::datatable(df_for_table,
+             style = 'bootstrap',
+             caption = 'Total backlog repair costs at each site (all risk levels)', 
+             filter = 'top',
+             options = list(pageLength = 10, scrollX=TRUE,
+                             autoWidth = TRUE,
+                             order = list(5, 'desc') #order by col 2
+                              ), escape = F
+             ) 
+```
+
+
+## Explore the most common cause of incidents
+
+The table below shows the most clinically impactful type of incident at each hospital site in the trust. In some cases no reason is given, or 'miscellaneous' is selected.
+
+```{r incidents table}
+df_incidentcauses <- rio::import("ERIC - 2022_23 - Site data.csv")
+
+#store the current trust name
+trust_to_match <- params$trust
+#the devon name needs to be changed to match the latest data
+if (trust_to_match == "ROYAL DEVON AND EXETER NHS FOUNDATION TRUST"){
+  trust_to_match <- "ROYAL DEVON UNIVERSITY HEALTHCARE NHS FOUNDATION TRUST"
+  }
+
+# Filter the dataframe using multiple conditions:
+df_inc_filtered <- df_incidentcauses %>%
+ filter(
+   `Trust Name` == trust_to_match,
+   `Site Type` == 'General acute hospital'
+ ) %>%
+ select(`Site Name`, `Most clinically impactful - Incident type (Select)`, 
+        `Second most clinically impactful - Incident type (Select)`,
+        `Third most clinically impactful - Incident type (Select)`)
+
+colnames(df_inc_filtered) <- c("Hospital name","Most clinically impactful incident type",
+                               "Second most clinically impactful incident type",
+                               "Third most clinically impactful incident type")
+
+#rename columns 
+#Create the datatable. Add a caption if you want
+DT::datatable(df_inc_filtered,
+             style = 'bootstrap',
+             caption = 'Most clinically impactful incident types', 
+             #filter = 'top',
+             options = list(pageLength = 10, scrollX=TRUE,
+                             autoWidth = TRUE,
+                             order = list(1, 'desc') #order by col 1
+                              ), escape = F
+             ) 
+```

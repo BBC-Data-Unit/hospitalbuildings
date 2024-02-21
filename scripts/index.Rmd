@@ -1,0 +1,230 @@
+---
+title: |
+  ![](https://raw.githubusercontent.com/sduiopc/test1/branch1/LNP%20Header-01.jpg){align=right width=40%}  
+  "Hospitals' high risk repair bill up by over a quarter"
+output: 
+  html_document:
+    self_contained: false
+    lib_dir: site/libs
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      message = F)
+```
+
+
+```{r import libraries}
+library(tidyverse)
+library(DT)
+#library(stringr)
+#library(ggplot2)
+```
+
+## What’s the story
+
+**Disrepair in hospitals across England led to disruption to patients’ care in at least 1,000 separate incidents in a year, the BBC can reveal.**
+
+The wide-ranging study by the BBC asked every acute hospital trust in England to provide details of when estates and infrastructure failures had caused so-called "clinical service incidents".
+
+These are when the ability to deliver care has been affected by failures in the hospital environment.
+
+A total of 86 trusts provided a response, revealing there had been at least 1,385 reports of infrastructure problems, impacting the care of at least 1,055 patients.
+
+We are [providing you with details of those incidents here](https://docs.google.com/spreadsheets/d/1VWCysIpaq0H3xh8XxbEMo73EmeIJbdzfcaCg-koqJw0/edit?usp=sharing).
+
+Incidents include:
+
+* Malfunctioning heating systems caused premature twins to develop hypothermia
+* Patients awaiting kidney dialysis being sent home because of ventilation issues
+* Sewage leaking into clinical areas for Ophthalmology
+* Part of a roof collapsing on a ward
+
+This comes as latest published figures estimate the bill to complete so-called high-risk repairs needed at NHS acute hospitals has swollen to £2bn - up by more than a third compared to the previous year.
+
+The cost to repair all infrastructure issues reached more than £9.5bn in 2022-23. There has been a rise of £867m over five years, adjusting for inflation.
+
+You can find information about the backlog at your individual trust by using the menus at the top of this webpage.
+
+Trusts with some of the largest repairs backlogs highlighted the age of their buildings.
+
+**Imperial College Healthcare NHS Trust** in London told the BBC some of its buildings were older than the NHS itself - “nearly 180 years old”. 
+
+**Leeds Teaching Hospitals NHS Trust** said large parts of its sites spanned “as far back as Victorian times”. 
+
+**Buckinghamshire Healthcare NHS Trust** said it was “delivering 21st century healthcare in 20th century buildings”.   It [faces a £2m annual bill to maintain the tower at Wycombe Hospital](https://www.buckshealthcare.nhs.uk/our-organisation/where-your-care-is-delivered/), which contains its intensive care unit and operating theatres.
+
+## The rising cost of repairs
+
+We analysed data from the last five years of the Estates Returns Information Collection (ERIC) to look at the cost of the backlog of repairs facing hospitals in the NHS. 
+
+These repairs are grouped into four risk areas: “low”, “moderate”, “significant”, and “high risk”.
+
+We found that high risk repairs - **repairs which must be urgently addressed to prevent catastrophic failure or major disruption to clinical services** - rose by more than a third between 21-22 and 22-23. Data is collected by financial year.
+
+This means, according to our analysis, the total high-risk repair bill for acute hospitals in England now stands at **£2bn**, up by 34% when compared to the previous year.
+
+The overall repair bill, which includes all types of repairs, for all acute hospitals in 2022-23 was **£9bn**.
+
+..
+
+## Some trusts have large repair costs
+
+* While nationally, the cost of the high-risk repair backlog stands at £2bn - one trust alone makes up 20% of that total.
+* Below the table shows the English trusts with the largest repair backlogs as of 2022-23. 
+
+```{r import trusts high risk 23 data}
+datafile = "pivotbyTrustHIGHRISK_hosp.xlsx"
+top10trustHighRisk <- readxl::read_xlsx(datafile, 
+                                               sheet = 'top10')
+```
+
+```{r top10trustHighRisk table}
+#format as £
+top10trustHighRisk$`2022-23` <- scales::dollar(as.numeric(top10trustHighRisk$`2022-23`), accuracy = 1, prefix = "£")
+
+
+#rename columns 
+#Create the datatable. Add a caption if you want
+DT::datatable(top10trustHighRisk,
+             style = 'bootstrap',
+             caption = 'English trusts with the largest high-risk repairs backlog (general acute hospitals only)', 
+             #filter = 'top',
+             options = list(pageLength = 10, scrollX=TRUE,
+                             autoWidth = TRUE,
+                             order = list(3, 'desc') #order by col 3
+                              ), escape = F
+             ) 
+```
+
+* When looking at all the repairs needed at hospital trusts in England, several saw their backlog costs double in the space of a year. Many of the trusts below have cited the discovery of RAAC - a type of aerated concrete used in the construction of many older municipal buildings - as being a major cost driver. Last year the Schools Minister Nick Gibb reported that a RAAC beam at a school had collapsed, prompting more than 100 known to have been built with the material to immediately close. A total of 42 hospitals are believed to have buildings constructed using RAAC. 
+* Below, the table shows all the hospital trusts with the biggest percentage rise in all repair types (low, moderate, significant and high risk).
+
+
+
+### Trusts that saw the largest increase in acute hospitals repairs backlogs (all levels) from 2021-22 to 2022-23
+
+```{r import trusts yoy data}
+datafile = "hospitalbuildingsANALYSIS.xlsx"
+pivotTrustALLRISK_hosp <- readxl::read_xlsx(datafile, 
+                                               sheet = 'pivotTrustALLRISK_hosp')
+```
+
+```{r trusts top 10 table}
+colnames(pivotTrustALLRISK_hosp) <- c("Trust","2021-22","2022-23","£ change", "% change")
+
+pivotTrustALLRISK_hosp <- pivotTrustALLRISK_hosp[order(-pivotTrustALLRISK_hosp$'% change'), ] %>% head(10)
+
+#loop through the column names 2 to 6
+for (i in colnames(pivotTrustALLRISK_hosp)[2:4]){
+  #format the column as currency
+  pivotTrustALLRISK_hosp[[i]] <- scales::dollar(as.numeric(pivotTrustALLRISK_hosp[[i]]), accuracy = 1, prefix = "£")
+}
+
+#convert the % change to a number
+#pivotbyregionHIGHRISK$`Change 2021-22 to 2022-23` <- as.numeric(pivotbyregionHIGHRISK$`Change 2021-22 to 2022-23`)
+#and to a whole % number
+pivotTrustALLRISK_hosp$`% change` <-scales::percent(pivotTrustALLRISK_hosp$`% change`, scale = 100, accuracy = 0.1)
+
+#rename columns 
+#Create the datatable. Add a caption if you want
+DT::datatable(pivotTrustALLRISK_hosp,
+             style = 'bootstrap',
+             caption = 'Sort by any column by clicking on the arrows', 
+             #filter = 'top',
+             options = list(pageLength = 10, scrollX=TRUE,
+                             autoWidth = TRUE,
+                             order = list(5, 'desc') #order by col 5
+                              ), escape = F
+             ) 
+```
+
+* Imperial College London has the highest overall repair bill, taking into account all types of repairs.
+
+### Repairs backlog for general acute hospitals (all risk levels)
+
+..
+
+
+* Below the table shows the English hospital trusts with the highest percentage rise in the cost of their high-risk repairs backlog. As you can see, some sites, such as Ashford and St Peter’s NHS Foundation Trust, had low starting bases. 
+* However, at some trusts the rise is significant. Oxford University Hospital’s high-risk backlog rose from £1.4m in 21-22 to nearly £51m in 22-23.
+
+
+### High-risk repairs: acute hospitals backlog percentage increase from 2021-22 to 2022-23
+
+```{r import trusts high risk yoy data}
+datafile = "pivotbyTrustHIGHRISK_hosp.xlsx"
+top10YOY <- readxl::read_xlsx(datafile, 
+                                               sheet = 'top10YOY')
+```
+
+```{r top10trustYOY HR table}
+#format as £
+top10YOY$`2021-22` <- scales::dollar(as.numeric(top10YOY$`2021-22`), accuracy = 1, prefix = "£")
+top10YOY$`2022-23` <- scales::dollar(as.numeric(top10YOY$`2022-23`), accuracy = 1, prefix = "£")
+top10YOY$`YoY change` <- scales::dollar(as.numeric(top10YOY$`YoY change`), accuracy = 1, prefix = "£")
+#and to a whole % number
+#top10YOY$`YoY change %` <- as.numeric(top10YOY$`YoY change %`)
+top10YOY$`YoY change %` <-scales::percent(top10YOY$`YoY change %`, scale = 100, accuracy = 0.1)
+
+#rename columns 
+#Create the datatable. Add a caption if you want
+DT::datatable(top10YOY,
+             style = 'bootstrap',
+             caption = 'Sort by any column by clicking on the arrows', 
+             #filter = 'top',
+             options = list(pageLength = 10, scrollX=TRUE,
+                             autoWidth = TRUE
+                              ), escape = F
+             ) 
+```
+
+
+..
+
+
+## Methodology
+
+We analysed data from the last five years of the NHS's [Estates Returns Information Collection](https://digital.nhs.uk/data-and-information/publications/statistical/estates-returns-information-collection) (ERIC) to look at the cost of the backlog of repairs facing hospitals in the NHS. These repairs are grouped into four risk areas: “low”, “moderate”, “significant”, and “high risk”.  To ensure that comparisons were accurate, historical costs were adjusted for inflation using the [Construction output price indices on all construction](https://www.ons.gov.uk/businessindustryandtrade/constructionindustry/datasets/interimconstructionoutputpriceindices) (new work and repair and maintenance). 
+
+In some cases trusts have merged to create new trusts. Where possible we have used old trusts’ figures to provide historical context to the new trust’s repair costs, using [NHS data on successor organisations](https://digital.nhs.uk/services/organisation-data-service/export-data-files/csv-downloads/miscellaneous). 
+
+Data on clinical incidents was taken from the same dataset. These are defined as those leading to “services being delayed, cancelled or otherwise interfered with owing to problems or failures related to the estates and infrastructure failure.” Incidents include problems with electrical, water or ventilation systems, internal fabric and fixtures, roofs and structures, or lifts and hoists. 
+
+Before 2021 this was only provided at trust level, so we have limited our analysis to the two latest years during which data has been provided at site level. In the most recent data hospitals also provide (where incidents have been recorded) data on the first, second, and third most clinically impactful incident type, and so we have included this too. 
+
+..
+
+The Python code used to fetch and clean the ERIC data [can be found in this document](https://docs.google.com/document/d/1wVUgjH1YpWRKX2Tthkbf0i0XoI9p6giUbI-emnzhDsE/edit#heading=h.8fx4y5rsqzei) along with further details around data quality and information about using time series data where a hospital trust has changed name.
+
+We meanwhile sent a request under the Freedom of Information Act (FOI) to all England’S NHS trusts requesting information on infrastructure and estates incidents in the 2022-23 financial year. The request had a response rate of 41%, with 86 out of 210 trusts providing information.
+
+Incidents relating to staffing problems, such as porters or cleaners, have been excluded from the data.
+
+Once the responses had been combined, we carried out some analysis to determine some of the most common types of incidents recorded.
+
+Due to the low response rate, comparisons should not be made between trusts or regions. These data are intended to provide an overall national picture and detail on individual trusts.
+
+Here is what we asked:
+
+> Under the FOI Act please provide me with the information below. Please confirm receipt of this request as soon as possible. 
+ 
+> Please provide additional details of clinical service incidents caused by estates and infrastructure failures which resulted in clinical services being delayed, cancelled or otherwise interfered with owing to problems or failures related to the estates and infrastructure failure, as measured in the ERIC return, in the 2022-23 financial year. This information could be collected from incident reporting systems.
+
+> For each incident, please provide:
+> 1.   	A summary of the incident.
+> 2.   	The number of patients affected.
+> 3.   	The service affected.
+> 4.   	How long the service was delayed/if it was cancelled. 
+
+
+## Data quality
+
+Norfolk Hospital has incomplete data so we have removed it from the website.
+
+
+## Rights-of-replies from NHS trusts
+
+These can be [found on the quotes page](https://hospitalbuildings.github.io/quotes.html).
+
