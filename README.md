@@ -27,6 +27,8 @@ Further information on the methodology can be found in a [dedicated methodology 
 
 As well as the Python notebook to gather, combine and clean the data on hospital buildings, R notebooks were used to create a bespoke analysis for 112 separate trusts, and publish that as a webpage with a page detailing the picture at each trust. The code for those notebooks is available in this repo in [the scripts folder](https://github.com/BBC-Data-Unit/hospitalbuildings/tree/main/scripts) and at the links below.
 
+* [Python notebook that fetches, combines, cleans and analyses the ERIC data on repairs backlogs](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/hospitalBuildingsAnalysisREPAIRS.ipynb)
+* [Python notebook that fetches, combines, cleans and analyses the ERIC incident data](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/hospitalBuildingsAnalysisINCIDENTS.ipynb)
 * [R notebook that generates the homepage for the story website](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/index.Rmd)
 * [R notebook that generates a 'template' page for each hospital trust](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/01templateBYTRUST.Rmd)
 * [R notebook that 'renders' that template into 120 different markdown files - one for each hospital trust](https://github.com/BBC-Data-Unit/hospitalbuildings/blob/main/scripts/02render.Rmd)
