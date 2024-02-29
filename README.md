@@ -57,7 +57,9 @@ As well as the Python notebook to gather, combine and clean the data on hospital
 * The Bucks Herald: [Buckinghamshire NHS Trust faces £100 million high-risk repairs backlog](https://www.bucksherald.co.uk/health/buckinghamshire-nhs-trust-faces-ps100-million-high-risk-repairs-backlog-4526934)
 * The Bucks Herald: [Shadow health secretary labels 'sticky plaster politics' as key reason for NHS building issues in Bucks and beyond](https://www.bucksherald.co.uk/news/politics/shadow-health-secretary-labels-sticky-plaster-politics-as-key-reason-for-nhs-building-issues-in-bucks-and-beyond-4529524)
 * Cambridge Independent: [Cambridge University Hospitals Trust faces £125m repair backlog bill](https://www.cambridgeindependent.co.uk/news/cambridge-university-hospitals-trust-faces-125m-repair-back-9354159/)
+* Crediton Courier: [Ageing hospital buildings push up Royal Devon and Exeter Trust’s repair bill](https://www.creditoncourier.co.uk/news/health/ageing-hospital-buildings-push-up-royal-devon-and-exeter-trusts-repair-bill-668121)
 * Devon Live: [Devon hospital trust's massive repair bill revealed](https://www.devonlive.com/news/devon-news/devon-hospital-trusts-massive-repair-9121391)
+* Falmouth Packet: [Royal Cornwall Hospital millions need to repair buildings](https://www.falmouthpacket.co.uk/news/24149188.royal-cornwall-hospital-millions-need-repair-buildings/)
 * Greatest Hits Radio: [Bucks NHS faces £100m repairs backlog](https://planetradio.co.uk/greatest-hits/beds-bucks-herts/news/bucks-nhs-faces-pound100m-repairs-backlog/)
 * Greatest Hits Radio: [Over £55million needed to repair hospitals across Peterborough, Stamford and Rutland](https://planetradio.co.uk/greatest-hits/cambridgeshire/news/millions-needed-to-repair-peterborough-hospitals/)
 * Greatest Hits Radio: [Oxford University Hospitals NHS Foundation Trust among those facing the most repairs](https://planetradio.co.uk/greatest-hits/oxfordshire/news/oxford-university-hospitals-nhs-foundation-trust-among-those-facing-the-most-repairs/)
@@ -88,6 +90,7 @@ As well as the Python notebook to gather, combine and clean the data on hospital
 * Westmoreland Gazette: [Furness General Hospital needs £19.7 million in repairs](https://www.thewestmorlandgazette.co.uk/news/24135397.furness-general-hospital-needs-19-7-million-repairs/)
 * Yahoo! News UK: [£240 MILLION needed to carry out necessary repairs to Oxford hospitals](https://uk.news.yahoo.com/240-million-needed-carry-necessary-123000215.html)
 * Yahoo! News UK: [£34 million needed to restore crumbling buildings at York hospital trust](https://uk.news.yahoo.com/34-million-needed-restore-crumbling-040000194.html)
+* Yahoo! News UK: [£30 million needed to restore 'crumbling' buildings at Warrington and Halton Hospital](https://uk.news.yahoo.com/30-million-needed-restore-crumbling-050000106.html)
 
 In addition, the story was covered across BBC television and radio, including packages by Hugh Pym for BBC Breakfast and Alix Hattenstone for Radio 4’s Today Programme. Questions were put to the health secretary Victoria Atkins on both programmes. BBC South West's 6.30 news programme carried the story, as did news bulletins on Radio 2, Radio 4 and Radio 5. Pieces were broadcast across 16 local radio outlets in total: Yorkshire, Scotland, Ulster, Northampton, Suffolk, Oxford, Three Counties, Surrey, Wiltshire, Nottingham, Lincolnshire, Cumbria, Cambridgeshire, London, Shropshire and Berkshire. On the Sunday following publication the matter was [discussed on Politics North](https://www.bbc.co.uk/news/articles/cq5xn9y0ddko).
 
