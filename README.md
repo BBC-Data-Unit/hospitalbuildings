@@ -53,6 +53,7 @@ As well as the Python notebook to gather, combine and clean the data on hospital
 * BNN Breaking: [Southampton Hospital Faces £130M Repair Crisis: Doctors Slam NHS Infrastructure Neglect](https://bnnbreaking.com/breaking-news/health/southampton-hospital-faces-130m-repair-crisis-doctors-slam-nhs-infrastructure-neglect)
 * Bolton News: [Royal Bolton Hospital's bid for new build rejected](https://www.theboltonnews.co.uk/news/24136608.royal-bolton-hospitals-bid-new-build-rejected/)
 * Bracknell News: [Hospitals in Berkshire require millions of pounds in repairs](https://www.bracknellnews.co.uk/news/24142134.hospitals-berkshire-require-millions-pounds-repairs/)
+* Brighton Argus: [Millions of pounds needed to fix crumbling Sussex hospital buildings](https://www.theargus.co.uk/news/24151881.millions-pounds-needed-fix-crumbling-sussex-hospital-buildings/)
 * Bristol World: [Tens of millions of pounds needed to repair crumbling buildings at the North Bristol Trust](https://www.bristolworld.com/your-bristol/south-gloucestershire/tens-of-millions-of-pounds-needed-to-repair-crumbling-buildings-at-the-north-bristol-trust-4526277)
 * Bucks Free Press: [Bucks NHS Trust faces £100 million repairs backlog](https://www.bucksfreepress.co.uk/awards/bhsc-awards-2021/news/24131107.bucks-nhs-trust-faces-100-million-repairs-backlog/)
 * The Bucks Herald: [Buckinghamshire NHS Trust faces £100 million high-risk repairs backlog](https://www.bucksherald.co.uk/health/buckinghamshire-nhs-trust-faces-ps100-million-high-risk-repairs-backlog-4526934)
