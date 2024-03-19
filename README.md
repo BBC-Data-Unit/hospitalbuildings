@@ -90,6 +90,7 @@ As well as the Python notebook to gather, combine and clean the data on hospital
 * Nottingham Post: [Nottingham hospitals in 'dreadful state' as repairs backlog rises to nearly £440m](https://www.nottinghampost.com/news/nottingham-news/nottingham-hospitals-dreadful-state-repairs-9114146)
 * Nottinghamshire Live: [Nottingham hospitals in 'dreadful state' as repairs backlog rises to nearly £440m](https://www.nottinghampost.com/news/nottingham-news/nottingham-hospitals-dreadful-state-repairs-9114146)
 * Radio Exe: [‘Unforgivable’ backlog of South Devon hospital repairs](https://www.radioexe.co.uk/news-and-features/local-news/unforgivable-backlog-of-south-devon-hospital-repairs/)
+* Reading Today: [Heating failure at Reading hospital causes disruption](https://rdg.today/heating-failure-at-reading-hospital-causes-disruption/)
 * Signal1 Radio: [UHNM repairs backlog hits £34.7m](https://planetradio.co.uk/signal1/local/news/uhnm-repairs-backlog-hits-pound347m/)
 * Southern Daily Echo: [Southampton hospital buildings need repairs costing £128m](https://www.dailyecho.co.uk/news/24136356.southampton-hospital-buildings-need-repairs-costing-128m/)
 * Suffolk News: [Large repair bill for West Suffolk NHS Foundation Trust due to ‘ageing estate and RAAC’ at West Suffolk Hospital site in Bury St Edmunds](https://www.suffolknews.co.uk/bury-st-edmunds/news/amp/safety-is-our-priority-hospital-s-trust-has-one-of-bigges-9353322/)
