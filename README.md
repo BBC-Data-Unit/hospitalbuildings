@@ -106,3 +106,5 @@ In addition, the story was covered across BBC television and radio, including pa
 
 ![Victoria Atkins](https://raw.githubusercontent.com/BBC-Data-Unit/hospitalbuildings/main/victoriaatkins.jpeg)
 
+Data from the project was also used by the BBC England Data Unit during the 2024 general election in its article [NHS: Your concerns, questions and stories](https://www.bbc.co.uk/news/extra/uzeufqrb78/nhs_your_voice_your_vote)
+
