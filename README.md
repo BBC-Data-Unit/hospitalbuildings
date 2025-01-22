@@ -4,6 +4,8 @@
 
 In February 2024 The Shared Data Unit (SDU) [looked at the scale of the backlog of repairs affecting hospitals, and the human impact of those](https://www.bbc.co.uk/news/uk-england-68214879): thousands of potentially-harmful incidents including critically-ill patients being moved when rainfall came through the ceiling.
 
+A [custom website](https://hospitalbuildings.github.io/site2/index.html) was created for partners to find out the story in their area, including custom visualisation. 
+
 ## Methodology
 
 We analysed data from the last five years of the NHS’s [Estates Returns Information Collection (ERIC)](https://digital.nhs.uk/data-and-information/publications/statistical/estates-returns-information-collection) to look at the cost of the backlog of repairs facing hospitals in the NHS. These repairs are grouped into four risk areas: “low”, “moderate”, “significant”, and “high risk”. To ensure that comparisons were accurate, historical costs were adjusted for inflation using the Construction output price indices on all construction (new work and repair and maintenance).
